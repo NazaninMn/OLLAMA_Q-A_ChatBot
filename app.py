@@ -22,7 +22,8 @@ prompt=ChatPromptTemplate.from_messages(
     ]
 )
 
-def generate_response(question,llm,temperature,max_tokens):
+def generate_response(question,llm,temperature,max_tokens, api_key):
+    os.environ["LANGCHAIN_API_KEY"] = api_key  
     llm=Ollama(model=llm)
     output_parser=StrOutputParser()
     chain=prompt|llm|output_parser
@@ -33,9 +34,10 @@ def generate_response(question,llm,temperature,max_tokens):
 ## #Title of the app
 st.title("Enhanced Q&A Chatbot With OLLAMA")
 
+api_key=st.sidebar.text_input("Enter your Open AI API Key:",type="password")
 
-## Select the OpenAI model
-llm=st.sidebar.selectbox("Select Open Source model",["gemma2"])
+## Select the OLLAMA model
+llm=st.sidebar.selectbox("Select Open Source model",["gemma2", "mistral"])
 
 ## Adjust response parameter
 temperature=st.sidebar.slider("Temperature",min_value=0.0,max_value=1.0,value=0.7)
@@ -47,9 +49,11 @@ user_input=st.text_input("You:")
 
 
 
-if user_input :
-    response=generate_response(user_input,llm,temperature,max_tokens)
+if user_input and api_key:
+    response=generate_response(user_input,llm,temperature,max_tokens, api_key)
     st.write(response)
+elif user_input:
+    st.warning("Please enter the OPen AI aPi Key in the sider bar")
 else:
     st.write("Please provide the user input")
 
