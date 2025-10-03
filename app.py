@@ -9,7 +9,6 @@ load_dotenv()
 
 
 ## Langsmith Tracking
-os.environ["LANGCHAIN_API_KEY"]=os.getenv("LANGCHAIN_API_KEY")
 os.environ["LANGCHAIN_TRACING_V2"]="true"
 os.environ["LANGCHAIN_PROJECT"]="Simple Q&A Chatbot With Ollama"
 
@@ -56,5 +55,6 @@ elif user_input:
     st.warning("Please enter the OPen AI aPi Key in the sider bar")
 else:
     st.write("Please provide the user input")
+
 
 
